@@ -12,11 +12,9 @@ lib-cov
 coverage
 .nyc_output
 .grunt
-.idea
 bower_components
 .lock-wscript
 build/Release
-node_modules/
 jspm_packages/
 typings/
 .npm
@@ -25,3 +23,15 @@ typings/
 *.tgz
 .yarn-integrity
 .env
+.DS_Store
+
+# Project target
+node_modules/
+dist/
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
