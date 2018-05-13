@@ -1,18 +1,21 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import App from './App.vue'
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+import VueRouter from 'vue-router';
+import App from './App.vue';
 import Home from './Home.vue';
-import Users from './Users.vue';
+import Auctions from './Auctions.vue';
 
 
 const routes = [
   {
     path: '/',
+    name: 'home',
     component: Home
   },
   {
-    path: '/users',
-    component: Users
+    path: '/auctions',
+    name: 'auctions',
+    component: Auctions
   }
 ];
 
@@ -22,7 +25,11 @@ const router = new VueRouter({
 });
 
 
+Vue.use(VueResource);
 Vue.use(VueRouter);
+
+Vue.http.options.emulateJSON = true;
+Vue.prototype.$apiUrl = 'http://localhost:4941/api/v1';
 
 new Vue({
   el: '#app',
