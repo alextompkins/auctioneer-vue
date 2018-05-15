@@ -8,11 +8,22 @@
       <br>{{ error }}
     </b-alert>
 
-    <b-form inline>
-      <b-form-select
+    <b-form class="mb-3" inline>
+      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
         v-model="statusFilter"
-        :options="statusFilterOptions"
-        class="mb-3">
+        :options="statusFilterOptions">
+      </b-form-select>
+
+      <b-form-group class="mb-2 mr-sm-2 mb-sm-0">
+        <b-form-input
+          v-model="titleFilter"
+          type="text"
+          placeholder="Auction Title"></b-form-input>
+      </b-form-group>
+
+      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
+        v-model="categoryFilter"
+        :options="categoryFilterOptions">
       </b-form-select>
     </b-form>
 
@@ -38,12 +49,18 @@
         errorFlag: false,
         statusFilter: "All",
         statusFilterOptions: ["All", "Active", "Expired", "Upcoming", "Won"],
+        titleFilter: "",
+        categoryFilter: "",
+        categoryFilterOptions: [],
         auctions: []
       }
     },
 
     watch: {
       statusFilter: function () {
+        this.getAuctions();
+      },
+      titleFilter: function () {
         this.getAuctions();
       }
     },
@@ -55,7 +72,8 @@
     methods: {
       getAuctions: function () {
         let params = {
-          "status": this.statusFilter.toLowerCase()
+          "status": this.statusFilter.toLowerCase(),
+          "q": this.titleFilter
         };
         this.$http.get(this.$apiUrl + '/auctions', {params: params})
           .then(function (response) {
