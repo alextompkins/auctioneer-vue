@@ -1,9 +1,13 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
+import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Home from './Home.vue';
 import Auctions from './Auctions.vue';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 
 const routes = [
@@ -27,6 +31,7 @@ const router = new VueRouter({
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(BootstrapVue);
 
 Vue.http.options.emulateJSON = true;
 Vue.prototype.$apiUrl = 'http://localhost:4941/api/v1';

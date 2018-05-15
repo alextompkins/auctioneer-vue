@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <b-container>
     <h1>Home</h1>
-    <p>hi.</p>
-    <router-link :to="{ name: 'auctions' }">Auctions</router-link>
-  </div>
+    <p>Welcome to <strong>Auctioneer</strong>.</p>
+  </b-container>
 </template>

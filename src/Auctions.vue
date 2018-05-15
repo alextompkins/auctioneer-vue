@@ -1,50 +1,43 @@
 <template>
-  <div>
+  <b-container>
     <h1>Auctions</h1>
-    <p>why hello again.</p>
 
-    <h3>Current Auctions:</h3>
+    <b-alert variant="danger" show
+      v-if="errorFlag">
+      <strong>An error occurred:</strong>
+      <br>{{ error }}
+    </b-alert>
 
-    <form>
-      <select v-model="statusFilter">
-        <option
-          v-for="option in statusFilterOptions"
-          v-bind:value="option"
-          v-on:
-        >{{ option }}</option>
-      </select>
-    </form>
+    <b-form inline>
+      <b-form-select
+        v-model="statusFilter"
+        :options="statusFilterOptions"
+        class="mb-3">
+      </b-form-select>
+    </b-form>
 
-    <table>
-      <tr>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Reserve Price</th>
-        <th>Current Bid</th>
-        <th>Starting</th>
-        <th>Ending</th>
-      </tr>
-      <tr v-for="auction in auctions">
-        <td>{{ auction.title }}</td>
-        <td>{{ auction.categoryTitle }}</td>
-        <td>${{ auction.reservePrice }}</td>
-        <td>${{ auction.currentBid }}</td>
-        <td>{{ new Date(auction.startDateTime).toLocaleDateString("en-NZ") }}</td>
-        <td>{{ new Date(auction.endDateTime).toLocaleDateString("en-NZ") }}</td>
-      </tr>
-    </table>
+    <ul class="list-unstyled">
+      <auction-media-item
+        v-for="auction in auctions"
+        :auction="auction"
+        :key="auction.id">
+      </auction-media-item>
+    </ul>
 
-  </div>
+  </b-container>
 </template>
 
 <script>
+  import AuctionMediaItem from "./AuctionMediaItem";
+
   export default {
+    components: {AuctionMediaItem},
     data() {
       return {
         error: "",
         errorFlag: false,
-        statusFilter: 'all',
-        statusFilterOptions: ["all", "active", "expired", "upcoming", "won"],
+        statusFilter: "All",
+        statusFilterOptions: ["All", "Active", "Expired", "Upcoming", "Won"],
         auctions: []
       }
     },
@@ -62,15 +55,23 @@
     methods: {
       getAuctions: function () {
         let params = {
-          "status": this.statusFilter
+          "status": this.statusFilter.toLowerCase()
         };
         this.$http.get(this.$apiUrl + '/auctions', {params: params})
           .then(function (response) {
             this.auctions = response.data;
           })
+          .then(function () {
+            this.errorFlag = false;
+            this.error = "";
+          })
           .catch(function (error) {
-            this.error = error;
             this.errorFlag = true;
+            if (error.status === 0) {
+              this.error = "The web server could not be reached.";
+            } else {
+              this.error = "A miscellaneous error occurred when retrieving auctions.";
+            }
           });
       }
     }
