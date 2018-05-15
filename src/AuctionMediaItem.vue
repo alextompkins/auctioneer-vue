@@ -1,6 +1,6 @@
 <template>
   <b-media>
-    <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" />
+    <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" ></b-img>
     <h5 class="mt-0">{{ auction.title }}</h5>
     <p>
       Current bid is ${{ auction.currentBid }}
