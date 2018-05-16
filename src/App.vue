@@ -15,7 +15,7 @@
     </b-navbar>
 
     <!-- Page content -->
-    <router-view/>
+    <router-view class="mt-3"/>
 
   </div>
 </template>
