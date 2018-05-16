@@ -1,35 +1,54 @@
 <template>
   <b-container>
     <h1>View Auction</h1>
-    <h3>{{ auction.title }}</h3>
-    <p>
-      <b-img></b-img>
 
-      <template v-if="auction.seller">Seller: {{ auction.seller.username }}</template>
+    <b-row>
+      <b-col>
+        <h3>{{ auction.title }}</h3>
+        <p>
+          <b-img></b-img>
 
-      <br>
-      <template v-if="auction.startDate < Date.now()">
-        Started on {{ auction.startDate.toLocaleString("en-NZ") }}.
-      </template>
-      <template v-else>
-        Starts on {{ auction.startDate.toLocaleString("en-NZ") }}.
-      </template>
+          <template v-if="auction.seller">Seller: {{ auction.seller.username }}</template>
 
-      <br>
-      <template v-if="auction.endDate < Date.now()">
-        Ended on {{ auction.endDate.toLocaleString("en-NZ") }}.
-      </template>
-      <template v-else>
-        Ends on {{ auction.endDate.toLocaleString("en-NZ") }}.
-      </template>
+          <br>
+          <template v-if="auction.startDate < Date.now()">
+            Started on {{ auction.startDate.toLocaleString("en-NZ") }}.
+          </template>
+          <template v-else>
+            Starts on {{ auction.startDate.toLocaleString("en-NZ") }}.
+          </template>
 
-    </p>
+          <br>
+          <template v-if="auction.endDate < Date.now()">
+            Ended on {{ auction.endDate.toLocaleString("en-NZ") }}.
+          </template>
+          <template v-else>
+            Ends on {{ auction.endDate.toLocaleString("en-NZ") }}.
+          </template>
+        </p>
+      </b-col>
+
+      <b-col>
+      <h4>Bids</h4>
+      <b-list-group>
+        <bid-list-item
+          v-for="bid in auction.bids"
+          :bid="bid"
+          :key="bid.datetime">
+        </bid-list-item>
+      </b-list-group>
+      </b-col>
+
+    </b-row>
 
   </b-container>
 </template>
 
 <script>
+  import BidListItem from "./BidListItem";
+
   export default {
+    components: {BidListItem},
     name: "auction-view",
 
     data() {
