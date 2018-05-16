@@ -1,10 +1,13 @@
 <template>
   <b-media class="mb-1">
     <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" ></b-img>
-    <h5 class="mt-0">{{ auction.title }}</h5> ({{ auction.categoryTitle }})
+    <router-link :to="{ name: 'auction-view', params: { id: auction.id } }">
+      <h5 class="mt-0">{{ auction.title }}</h5>
+    </router-link>
+    ({{ auction.categoryTitle }})
     <p>
       Current bid is ${{ auction.currentBid }}
-      <br>Auction ends on {{ new Date(auction.endDateTime).toLocaleDateString("en-NZ") }}.
+      <br>Auction ends on {{ new Date(auction.endDateTime).toLocaleString("en-NZ") }}.
     </p>
   </b-media>
 </template>

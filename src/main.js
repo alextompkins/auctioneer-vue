@@ -5,6 +5,7 @@ import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Home from './Home.vue';
 import Auctions from './Auctions.vue';
+import AuctionView from './AuctionView.vue';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -20,6 +21,11 @@ const routes = [
     path: '/auctions',
     name: 'auctions',
     component: Auctions
+  },
+  {
+    path: '/auctions/:id',
+    name: 'auction-view',
+    component: AuctionView
   }
 ];
 
