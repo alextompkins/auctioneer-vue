@@ -1,7 +1,7 @@
 <template>
   <b-media class="mb-1">
     <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" ></b-img>
-    <h5 class="mt-0">{{ auction.title }}</h5>
+    <h5 class="mt-0">{{ auction.title }}</h5> ({{ auction.categoryTitle }})
     <p>
       Current bid is ${{ auction.currentBid }}
       <br>Auction ends on {{ new Date(auction.endDateTime).toLocaleDateString("en-NZ") }}.
@@ -17,5 +17,7 @@
 </script>
 
 <style scoped>
-
+  h5 {
+    display: inline-block;
+  }
 </style>
