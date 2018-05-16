@@ -39,6 +39,8 @@
 
     <b-button type="submit" variant="primary">Sign in</b-button>
 
+    <loading-spinner class="float-right" :loading="loading"/>
+
     <b-alert class="mt-3" variant="danger" v-if="error" show>
       {{ error }}
     </b-alert>
@@ -47,7 +49,10 @@
 </template>
 
 <script>
+  import LoadingSpinner from "./LoadingSpinner";
+
   export default {
+    components: {LoadingSpinner},
     name: "login-box",
     props: ['session'],
 
@@ -57,13 +62,15 @@
         email: "",
         username: "",
         password: "",
-        error: ""
+        error: "",
+        loading: false
       }
     },
 
     methods: {
       onSubmit: function (event) {
         event.preventDefault();
+        this.loading = true;
 
         let loginData = {
           "password": this.password
@@ -74,26 +81,32 @@
           loginData["email"] = this.email;
         }
 
+        let newSession = {};
+
         this.$http.post(this.$apiUrl + '/users/login', loginData)
           .then(function (response) {
-            this.error = "";
-            this.session.loggedIn = true;
-            this.session.user = {
+            newSession.user = {
               "id": response.data.id,
             };
-            this.session.token = response.data.token;
+            newSession.token = response.data.token;
 
             return this.$http.get(this.$apiUrl + '/users/' + response.data.id,
-              { headers: {'X-Authorization': this.session.token} });
+              { headers: {'X-Authorization': newSession.token} });
           })
           .then(function (response) {
-            this.session.user = {
-              "id": this.session.user.id,
-              "username": response.data.username,
-              "email": response.data.email
-            };
+            newSession.user.username = response.data.username;
+            newSession.user.email = response.data.email;
+          })
+          .then(function () {
+            this.error = "";
+            this.loading = false;
+
+            this.session.loggedIn = true;
+            this.session.user = newSession.user;
+            this.session.token = newSession.token;
           })
           .catch(function (error) {
+            this.loading = false;
             if (error.status === 400) {
               this.error = "Incorrect credentials.";
             } else {
