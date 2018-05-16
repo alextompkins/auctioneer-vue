@@ -7,18 +7,20 @@
 
       <template v-if="auction.seller">Seller: {{ auction.seller.username }}</template>
 
+      <br>
       <template v-if="auction.startDate < Date.now()">
-        <br>Started on {{ auction.startDate.toLocaleString("en-NZ") }}.
+        Started on {{ auction.startDate.toLocaleString("en-NZ") }}.
       </template>
       <template v-else>
-        <br>Starts on {{ auction.startDate.toLocaleString("en-NZ") }}.
+        Starts on {{ auction.startDate.toLocaleString("en-NZ") }}.
       </template>
 
+      <br>
       <template v-if="auction.endDate < Date.now()">
-        <br>Ended on {{ auction.endDate.toLocaleString("en-NZ") }}.
+        Ended on {{ auction.endDate.toLocaleString("en-NZ") }}.
       </template>
       <template v-else>
-        <br>Ends on {{ auction.endDate.toLocaleString("en-NZ") }}.
+        Ends on {{ auction.endDate.toLocaleString("en-NZ") }}.
       </template>
 
     </p>
