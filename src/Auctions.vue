@@ -45,6 +45,9 @@
 
   export default {
     components: {AuctionMediaItem},
+    name: "auctions",
+    props: ['session'],
+
     data() {
       return {
         error: "",

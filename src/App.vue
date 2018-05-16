@@ -12,9 +12,13 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown text="Login" right>
+          <b-nav-item-dropdown :text="session.user.username" right v-if="session.loggedIn">
+            <b-dropdown-item v-on:click="logout">Logout</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown text="Login" right v-else>
             <li class="px-3 py-2" style="width: 20rem">
-              <login-box/>
+              <login-box :session="session" />
             </li>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -24,7 +28,7 @@
     </b-navbar>
 
     <!-- Page content -->
-    <router-view class="mt-3"/>
+    <router-view :session="session" class="mt-3"/>
 
   </div>
 </template>
@@ -35,6 +39,33 @@
   export default {
     components: {LoginBox},
     name: "app",
+
+    data() {
+      return {
+        session: {
+          "loggedIn": false,
+          "token": "",
+          "user": null
+        }
+      }
+    },
+
+    methods: {
+      logout: function () {
+        this.$http.post(this.$apiUrl + '/users/logout', {}, {
+          'headers': {'X-Authorization': this.session.token}
+        })
+          .then(function () {
+            this.session.loggedIn = false;
+            this.session.user = null;
+            this.session.token = "";
+          })
+          .catch(function () {
+            // TODO do something if error
+          });
+      }
+    }
+
   }
 </script>
 

@@ -50,6 +50,7 @@
   export default {
     components: {BidListItem},
     name: "auction-view",
+    props: ['session'],
 
     data() {
       return {
