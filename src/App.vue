@@ -10,6 +10,15 @@
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'auctions' }">Auctions</b-nav-item>
         </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown text="Login" right>
+            <li class="px-3 py-2" style="width: 20rem">
+              <login-box/>
+            </li>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+
       </b-collapse>
 
     </b-navbar>
@@ -19,3 +28,16 @@
 
   </div>
 </template>
+
+<script>
+  import LoginBox from "./LoginBox";
+
+  export default {
+    components: {LoginBox},
+    name: "app",
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -3,7 +3,7 @@
     <h1>View Auction</h1>
 
     <b-row>
-      <b-col>
+      <b-col xs="12" md="7">
         <h3>{{ auction.title }}</h3>
         <p>
           <b-img></b-img>
@@ -28,15 +28,15 @@
         </p>
       </b-col>
 
-      <b-col>
-      <h4>Bids</h4>
-      <b-list-group>
-        <bid-list-item
-          v-for="bid in auction.bids"
-          :bid="bid"
-          :key="bid.datetime">
-        </bid-list-item>
-      </b-list-group>
+      <b-col xs="12" md="5">
+        <h4>Bids</h4>
+        <b-list-group>
+          <bid-list-item
+            v-for="bid in auction.bids"
+            :bid="bid"
+            :key="bid.datetime">
+          </bid-list-item>
+        </b-list-group>
       </b-col>
 
     </b-row>
