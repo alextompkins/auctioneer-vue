@@ -1,5 +1,5 @@
 <template>
-  <b-media>
+  <b-media class="mb-1">
     <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" ></b-img>
     <h5 class="mt-0">{{ auction.title }}</h5>
     <p>
