@@ -2,7 +2,7 @@
   <b-list-group-item>
     <b-link>{{ bid.buyerUsername }}</b-link>
     <div class="d-flex w-100 justify-content-between">
-      <h2>${{ bid.amount }}</h2>
+      <h2>${{ bid.amount / 100 }}</h2>
       <small class="mt-auto">{{ datetimeString }}</small>
     </div>
   </b-list-group-item>

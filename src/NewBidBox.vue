@@ -2,16 +2,17 @@
   <b-list-group-item>
     <h5>New bid</h5>
 
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-form-group label="Enter amount">
         <b-input-group prepend="$">
           <b-form-input placeholder="Amount"
                         v-model="amount"
                         type="text"
-                        required>
+                        :state="amountValid"
+                        :invalid-feedback="invalidFeedback">
           </b-form-input>
           <b-input-group-append>
-            <b-btn variant="primary">
+            <b-btn type="submit" variant="primary">
               Make bid
             </b-btn>
           </b-input-group-append>
@@ -26,33 +27,58 @@
 <script>
   export default {
     name: "new-bid-box",
-    props: ['session', 'auctionId'],
+    props: ['session', 'auctionId', 'minNextBid', 'bids'],
 
     data() {
       return {
-        amount: ""
+        amount: "",
+        nextBid: this.minNextBid
       }
     },
 
     computed: {
-      intAmount: function () {
+      amountInCents: function () {
         if (isNaN(this.amount)) {
           return NaN;
         } else {
-          return parseFloat(this.amount) * 100;
+          return Math.trunc(parseFloat(this.amount) * 100);
         }
+      },
+      amountValid: function () {
+        if (this.amount === "") {
+          return null;
+        } else {
+          return this.amountInCents >= this.nextBid;
+        }
+      },
+      invalidFeedback: function () {
+        return "Bid must be higher than the current/starting bid.";
       }
     },
 
     methods: {
       onSubmit: function (event) {
         event.preventDefault();
-        if (isNaN(this.intAmount)) {
+        if (this.amountValid) {
           this.postBid();
         }
       },
       postBid: function () {
-
+        let bidData = {
+          amount: this.amountInCents
+        };
+        this.$http.post(this.$apiUrl + '/auctions/' + this.auctionId + '/bids', {},
+          { params: bidData, headers: {'X-Authorization': this.session.token} })
+          .then(function (response) {
+            bidData.datetime = Date.now();
+            bidData.buyerId = this.session.user.id;
+            bidData.buyerUsername = this.session.user.username;
+            this.bids.push(bidData);
+            this.nextBid = bidData.amount + 1;
+          })
+          .catch(function (error) {
+            // TODO do something clever
+          });
       }
     }
 

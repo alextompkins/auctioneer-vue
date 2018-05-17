@@ -31,7 +31,10 @@
       <b-col xs="12" md="5">
         <h4>Bids</h4>
         <b-list-group>
-          <new-bid-box :session="session" :auction-id="this.$route.params.id" />
+          <new-bid-box :session="session"
+                       :auctionId="$route.params.id"
+                       :minNextBid="minNextBid"
+                       :bids="auction.bids"/>
           <bid-list-item
             v-for="bid in bidsSortedByMostRecent"
             :bid="bid"
@@ -64,6 +67,9 @@
     },
 
     computed: {
+      minNextBid: function () {
+        return Math.max(this.auction.startingBid, this.auction.currentBid + 1);
+      },
       bidsSortedByMostRecent: function () {
         return this.auction.bids.sort((b1, b2) => b1.datetime < b2.datetime);
       }
