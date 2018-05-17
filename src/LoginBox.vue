@@ -1,6 +1,6 @@
 <template>
   <b-form @submit="onSubmit">
-    <b-link class="float-right btn btn-outline-primary">Register</b-link>
+    <b-link class="float-right btn btn-outline-primary" :to="{ name: 'register' }">Register</b-link>
     <h4 class="mb-4 mt-1">Sign in</h4>
 
     <b-form-group label="Your username"

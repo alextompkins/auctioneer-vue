@@ -13,6 +13,7 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown :text="session.user.username" right v-if="session.loggedIn">
+            <b-dropdown-item>My Profile</b-dropdown-item>
             <b-dropdown-item v-on:click="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
 
