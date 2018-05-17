@@ -31,8 +31,9 @@
       <b-col xs="12" md="5">
         <h4>Bids</h4>
         <b-list-group>
+          <new-bid-box :session="session" :auction-id="this.$route.params.id" />
           <bid-list-item
-            v-for="bid in auction.bids"
+            v-for="bid in bidsSortedByMostRecent"
             :bid="bid"
             :key="bid.datetime">
           </bid-list-item>
@@ -46,15 +47,25 @@
 
 <script>
   import BidListItem from "./BidListItem";
+  import NewBidBox from "./NewBidBox";
 
   export default {
-    components: {BidListItem},
+    components: {
+      NewBidBox,
+      BidListItem
+    },
     name: "auction-view",
     props: ['session'],
 
     data() {
       return {
         auction: {}
+      }
+    },
+
+    computed: {
+      bidsSortedByMostRecent: function () {
+        return this.auction.bids.sort((b1, b2) => b1.datetime < b2.datetime);
       }
     },
 
