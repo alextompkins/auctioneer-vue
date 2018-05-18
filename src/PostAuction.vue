@@ -232,7 +232,7 @@
         };
 
         this.$http.post(this.$apiUrl + '/auctions' , auctionData,
-          { headers: {'X-Authorization': this.session.token} })
+          { emulateJSON: false, headers: {'X-Authorization': this.session.token} })
           .then(function (response) {
             return response.data.id;
           })
