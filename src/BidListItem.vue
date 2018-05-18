@@ -9,17 +9,14 @@
 </template>
 
 <script>
+  import {amountAsCurrency} from "./helpers";
+
   export default {
     name: "bid-list-item",
     props: ['bid'],
     computed: {
       amountAsCurrency: function () {
-        const formatter = new Intl.NumberFormat("en-NZ", {
-          style: "currency",
-          currency: "NZD",
-          minimumFractionDigits: 2
-        });
-        return formatter.format(this.bid.amount / 100)
+        return amountAsCurrency(this.bid.amount);
       },
       datetimeString: function () {
         return new Date(this.bid.datetime).toLocaleString("en-NZ");

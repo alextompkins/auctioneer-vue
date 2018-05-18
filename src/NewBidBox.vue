@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import dollarStringToCents from "./helpers";
+
   export default {
     name: "new-bid-box",
     props: ['session', 'auctionId', 'minNextBid', 'bids'],
@@ -38,11 +40,7 @@
 
     computed: {
       amountInCents: function () {
-        if (isNaN(this.amount)) {
-          return NaN;
-        } else {
-          return Math.round(parseFloat(this.amount) * 100);
-        }
+        return dollarStringToCents(this.amount);
       },
       amountValid: function () {
         if (this.amount === "") {

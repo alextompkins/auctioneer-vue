@@ -85,7 +85,7 @@
         password: "",
         confirm: "",
         error: "",
-        loading: ""
+        loading: false
       }
     },
 
