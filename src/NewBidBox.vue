@@ -8,8 +8,7 @@
           <b-form-input placeholder="Amount"
                         v-model="amount"
                         type="text"
-                        :state="amountValid"
-                        :invalid-feedback="invalidFeedback">
+                        :state="amountValid">
           </b-form-input>
           <b-input-group-append>
             <b-btn type="submit" variant="primary">
@@ -17,6 +16,7 @@
             </b-btn>
           </b-input-group-append>
         </b-input-group>
+        <template slot="invalid-feedback">{{ invalidFeedback }}</template>
       </b-form-group>
 
     </b-form>

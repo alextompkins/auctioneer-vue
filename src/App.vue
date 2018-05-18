@@ -8,7 +8,13 @@
 
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'auctions' }">Auctions</b-nav-item>
+          <b-nav-item-dropdown text="Buying">
+            <b-dropdown-item :to="{ name: 'auctions' }">Search Auctions</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown text="Selling" v-if="session.loggedIn">
+            <b-dropdown-item :to="{ name: 'post-auction' }">Post Auction</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
