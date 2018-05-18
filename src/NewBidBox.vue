@@ -41,7 +41,7 @@
         if (isNaN(this.amount)) {
           return NaN;
         } else {
-          return Math.trunc(parseFloat(this.amount) * 100);
+          return Math.round(parseFloat(this.amount) * 100);
         }
       },
       amountValid: function () {
