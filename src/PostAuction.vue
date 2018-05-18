@@ -2,7 +2,7 @@
   <b-container>
     <h1>New Auction</h1>
 
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-row>
         <b-col xs="12" md="6">
           <b-form-group label="Enter auction title">
@@ -32,23 +32,33 @@
           <b-form-group label="Choose when the auction will start">
             <b-row>
               <b-col>
-                <b-form-input v-model="startDate" type="date" required></b-form-input>
+                <b-form-input v-model="startDate" placeholder="yyyy-mm-dd" type="date"
+                              :state="startDateTimeValid" required></b-form-input>
               </b-col>
               <b-col>
-                <b-form-input v-model="startTime" type="time" required></b-form-input>
+                <b-form-input v-model="startTime" placeholder="hh:mm" type="time"
+                              :state="startDateTimeValid" required></b-form-input>
               </b-col>
             </b-row>
+            <div class="invalid-error" v-if="startDateTimeValid === false">
+              Auction start must be in the future.
+            </div>
           </b-form-group>
 
           <b-form-group label="Choose when the auction will end">
             <b-row>
               <b-col>
-                <b-form-input v-model="endDate" type="date" required></b-form-input>
+                <b-form-input v-model="endDate" placeholder="yyyy-mm-dd" type="date"
+                              :state="endDateTimeValid" required></b-form-input>
               </b-col>
               <b-col>
-                <b-form-input v-model="endTime" type="time" required></b-form-input>
+                <b-form-input v-model="endTime" placeholder="hh:mm" type="time"
+                              :state="endDateTimeValid" required></b-form-input>
               </b-col>
             </b-row>
+            <div class="invalid-error" v-if="endDateTimeValid === false">
+              The auction's end must be after it starts.
+            </div>
           </b-form-group>
 
           <b-form-group label="Choose a reserve price">
@@ -56,10 +66,13 @@
               <b-form-input placeholder="Amount"
                             v-model="reservePrice"
                             type="text"
-                            :state="reservePrice === '' ? null : reservePrice >= 0"
+                            :state="reservePriceValid"
                             required>
               </b-form-input>
             </b-input-group>
+            <div class="invalid-error" v-if="reservePriceValid === false">
+              Reserve price must be a non-negative number.
+            </div>
           </b-form-group>
 
           <b-form-group label="Choose a starting bid">
@@ -67,11 +80,17 @@
               <b-form-input placeholder="Amount"
                             v-model="startingBid"
                             type="text"
-                            :state="startingBid === '' ? null : startingBid > 0"
+                            :state="startingBidValid"
                             required>
               </b-form-input>
             </b-input-group>
+            <div class="invalid-error" v-if="startingBidValid === false">
+              Starting bid must be a number greater than 0.
+            </div>
           </b-form-group>
+
+          <b-button type="submit" variant="primary">Post Auction</b-button>
+          <loading-spinner class="float-right" :loading="loading" />
         </b-col>
 
         <b-col xs="12" md="1"></b-col>
@@ -95,7 +114,11 @@
 </template>
 
 <script>
+  import LoadingSpinner from "./LoadingSpinner";
+  import {dollarStringToCents} from "./helpers";
+
   export default {
+    components: {LoadingSpinner},
     name: "post-auction",
     props: ['session'],
 
@@ -117,11 +140,44 @@
         photo: null,
         previewUrl: null,
         categories: [],
-        error: ""
+        error: "",
+        loading: false
       }
     },
 
     computed: {
+      startDateTime: function () {
+        return Date.parse(this.startDate + " " + this.startTime);
+      },
+      endDateTime: function () {
+        return Date.parse(this.endDate + " " + this.endTime);
+      },
+      reservePriceInCents: function () {
+        return dollarStringToCents(this.reservePrice);
+      },
+      startingBidInCents: function () {
+        return dollarStringToCents(this.startingBid);
+      },
+      startDateTimeValid: function () {
+        if (this.startDate === "" && this.startTime === "") {
+          return null;
+        } else {
+          return !isNaN(this.startDateTime) && this.startDateTime > Date.now();
+        }
+      },
+      endDateTimeValid: function () {
+        if (this.endDate === "" && this.endTime === "") {
+          return null;
+        } else {
+          return !isNaN(this.endDateTime) && this.endDateTime > this.startDateTime
+        }
+      },
+      reservePriceValid: function () {
+        return this.reservePrice === "" ? null : this.reservePriceInCents >= 0;
+      },
+      startingBidValid: function () {
+        return this.startingBid === "" ? null : this.startingBidInCents > 0;
+      },
       categoryOptions: function () {
         let options = [];
         options.push({text: "Choose category", value: ""});
@@ -155,6 +211,42 @@
       onPhotoChange: function (event) {
         const file = event.target.files[0];
         this.previewUrl = URL.createObjectURL(file);
+      },
+      onSubmit: function (event) {
+        event.preventDefault();
+        if (this.startDateTimeValid && this.endDateTimeValid &&
+            this.reservePriceValid && this.startingBidValid) {
+          this.postAuction();
+        }
+      },
+      postAuction: function () {
+        this.loading = true;
+        let auctionData = {
+          "categoryId": this.categoryId,
+          "title": this.title,
+          "description": this.description,
+          "startDateTime": this.startDateTime,
+          "endDateTime": this.endDateTime,
+          "reservePrice": this.reservePriceInCents,
+          "startingBid": this.startingBidInCents
+        };
+
+        this.$http.post(this.$apiUrl + '/auctions' , auctionData,
+          { headers: {'X-Authorization': this.session.token} })
+          .then(function (response) {
+            return response.data.id;
+          })
+          .then(function (auctionid) {
+            // TODO upload image as well
+          })
+          .then(function () {
+            this.loading = false;
+            this.$router.push({ name: 'auctions' });
+          })
+          .catch(function (error) {
+            this.loading = false;
+            // TODO do something clever
+          })
       }
     }
 
@@ -174,5 +266,13 @@
 
   #preview img {
     width: 100%;
+  }
+
+  .invalid-error {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #dc3545;
   }
 </style>
