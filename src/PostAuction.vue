@@ -89,8 +89,6 @@
             </div>
           </b-form-group>
 
-          <b-button type="submit" variant="primary">Post Auction</b-button>
-          <loading-spinner class="float-right" :loading="loading" />
         </b-col>
 
         <b-col xs="12" md="1"></b-col>
@@ -116,6 +114,11 @@
           <b-card id="preview" v-if="previewUrl && photoValid">
             <b-img :src="previewUrl"></b-img>
           </b-card>
+        </b-col>
+
+        <b-col class="my-3" xs="12">
+          <b-button type="submit" variant="primary">Post Auction</b-button>
+          <loading-spinner class="float-right" :loading="loading" />
         </b-col>
 
       </b-row>
