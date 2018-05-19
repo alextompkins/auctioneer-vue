@@ -97,13 +97,23 @@
 
         <b-col xs="12" md="5">
           <b-form-group label="Choose a photo">
-            <b-form-file @change="onPhotoChange"
-                         v-model="photo"
-                         accept="image/jpeg, image/png">
-            </b-form-file>
+            <b-input-group>
+              <b-form-file @change="onPhotoChange"
+                           v-model="photo"
+                           ref="photoinput"
+                           accept="image/jpeg, image/png"
+                           :state="photoValid">
+              </b-form-file>
+              <b-input-group-append>
+                <b-button @click="clearPhotoInput">Clear</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <div class="invalid-error" v-if="photoValid === false">
+              That is not a valid photo. Photos must be either PNG or JPEG files.
+            </div>
           </b-form-group>
 
-          <b-card id="preview" v-if="previewUrl">
+          <b-card id="preview" v-if="previewUrl && photoValid">
             <b-img :src="previewUrl"></b-img>
           </b-card>
         </b-col>
@@ -158,6 +168,19 @@
       startingBidInCents: function () {
         return dollarStringToCents(this.startingBid);
       },
+      photoContentType: function () {
+        const photoNameLower = this.photo.name.toLowerCase();
+        if (photoNameLower.endsWith(".png")) {
+          return "image/png";
+        } else if (photoNameLower.endsWith("jpg") || photoNameLower.endsWith(".jpeg")) {
+          return "image/jpeg";
+        } else {
+          return "";
+        }
+      },
+      photoValid: function () {
+        return this.photo === null ? null : this.photoContentType !== "";
+      },
       startDateTimeValid: function () {
         if (this.startDate === "" && this.startTime === "") {
           return null;
@@ -208,6 +231,9 @@
             }
           });
       },
+      clearPhotoInput: function () {
+        this.$refs.photoinput.reset();
+      },
       onPhotoChange: function (event) {
         const file = event.target.files[0];
         this.previewUrl = URL.createObjectURL(file);
@@ -215,7 +241,8 @@
       onSubmit: function (event) {
         event.preventDefault();
         if (this.startDateTimeValid && this.endDateTimeValid &&
-            this.reservePriceValid && this.startingBidValid) {
+            this.reservePriceValid && this.startingBidValid &&
+            this.photoValid !== false) {
           this.postAuction();
         }
       },
@@ -236,8 +263,11 @@
           .then(function (response) {
             return response.data.id;
           })
-          .then(function (auctionid) {
-            // TODO upload image as well
+          .then(function (auctionId) {
+            if (this.photo != null) {
+              return this.$http.post(this.$apiUrl + '/auctions/' + auctionId + '/photos', this.photo, { emulateJSON: false,
+                headers: {'X-Authorization': this.session.token, 'Content-Type': this.photoContentType} });
+            }
           })
           .then(function () {
             this.loading = false;
