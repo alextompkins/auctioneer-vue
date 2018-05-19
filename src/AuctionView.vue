@@ -1,34 +1,30 @@
 <template>
   <b-container>
-    <h1>View Auction</h1>
+    <h4>View Auction</h4>
 
     <b-row>
       <b-col xs="12" md="7">
-        <h3>{{ auction.title }}</h3>
+        <h2>{{ auction.title }}</h2>
+
+        <b-card class="mb-3" id="preview">
+          <b-img :src="this.$apiUrl + '/auctions/' + $route.params.id + '/photos'"></b-img>
+        </b-card>
+
+        <h4>Details</h4>
+
         <p>
-          <b-img></b-img>
+          {{ auction.description }}
+          <br>Seller: {{ auction.seller.username }}
 
-          <template v-if="auction.seller">Seller: {{ auction.seller.username }}</template>
-
-          <br>
-          <template v-if="auction.startDate < Date.now()">
-            Started on {{ auction.startDate.toLocaleString("en-NZ") }}.
-          </template>
-          <template v-else>
-            Starts on {{ auction.startDate.toLocaleString("en-NZ") }}.
-          </template>
-
-          <br>
-          <template v-if="auction.endDate < Date.now()">
-            Ended on {{ auction.endDate.toLocaleString("en-NZ") }}.
-          </template>
-          <template v-else>
-            Ends on {{ auction.endDate.toLocaleString("en-NZ") }}.
-          </template>
+          <br>{{ startDateString }}
+          <br>{{ endDateString }}
         </p>
+
       </b-col>
 
-      <b-col xs="12" md="5">
+      <b-col xs="12" md="1"></b-col>
+
+      <b-col xs="12" md="4">
         <h4>Bids</h4>
         <b-list-group>
           <b-list-group-item v-if="cannotBidReason">
@@ -56,6 +52,7 @@
 <script>
   import BidListItem from "./BidListItem";
   import NewBidBox from "./NewBidBox";
+  import {formatDateTimeAbsolute} from "./helpers";
 
   export default {
     components: {
@@ -72,6 +69,22 @@
     },
 
     computed: {
+      startDateString: function () {
+        let dateTimeString = formatDateTimeAbsolute(this.auction.startDateTime);
+        if (Date.now() < this.auction.startDateTime) {
+          return "Will begin " + dateTimeString;
+        } else {
+          return "Began " + dateTimeString;
+        }
+      },
+      endDateString: function () {
+        let dateTimeString = formatDateTimeAbsolute(this.auction.endDateTime);
+        if (Date.now() < this.auction.endDateTime) {
+          return "Will end " + dateTimeString;
+        } else {
+          return "Ended " + dateTimeString;
+        }
+      },
       minNextBid: function () {
         return Math.max(this.auction.startingBid, this.auction.currentBid + 1);
       },
@@ -101,13 +114,7 @@
       getAuction: function () {
         this.$http.get(this.$apiUrl + '/auctions/' + this.$route.params.id)
           .then(function (response) {
-            let auction = response.data;
-            auction.startDate = new Date(auction.startDateTime);
-            auction.endDate = new Date(auction.endDateTime);
-            return auction;
-          })
-          .then(function (auction) {
-            this.auction = auction;
+            this.auction = response.data;
           })
           .catch(function (error) {
             // TODO deal with error
@@ -119,5 +126,21 @@
 </script>
 
 <style scoped>
+  .card-body {
+    width: 100%;
+  }
 
+  #preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #preview img {
+    max-width: 100%;
+    max-height: 30rem;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
