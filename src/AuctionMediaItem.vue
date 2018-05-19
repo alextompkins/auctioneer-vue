@@ -6,16 +6,24 @@
     </b-link>
     ({{ auction.categoryTitle }})
     <p>
-      Current bid is ${{ auction.currentBid }}
+      Current bid is {{ currentBidAsCurrency }}
       <br>Auction ends on {{ new Date(auction.endDateTime).toLocaleString("en-NZ") }}.
     </p>
   </b-media>
 </template>
 
 <script>
+  import {amountAsCurrency} from "./helpers";
+
   export default {
     name: "auction-media-item",
-    props: ['auction']
+    props: ['auction'],
+
+    computed: {
+      currentBidAsCurrency: function () {
+        return amountAsCurrency(this.auction.currentBid);
+      }
+    }
   }
 </script>
 
