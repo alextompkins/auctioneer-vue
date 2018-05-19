@@ -43,6 +43,6 @@ export function formatDateTimeAbsolute(datetimeEpochMillis) {
   return new moment(datetimeEpochMillis).format("h:mm A, Do MMMM YYYY");
 }
 
-export function formatDateTimeRelative(datetimeEpochMillis) {
+export function formatTimeRelative(datetimeEpochMillis) {
   return new moment(datetimeEpochMillis).fromNow();
 }

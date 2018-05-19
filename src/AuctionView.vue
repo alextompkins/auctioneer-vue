@@ -27,6 +27,7 @@
       <b-col xs="12" md="4">
         <h4>Bids</h4>
         <b-list-group>
+          <auction-status-box :auction="auction"/>
           <b-list-group-item v-if="cannotBidReason">
             <h5>Cannot bid</h5>
             {{ cannotBidReason }}
@@ -50,12 +51,14 @@
 </template>
 
 <script>
+  import AuctionStatusBox from "./AuctionStatusBox";
   import BidListItem from "./BidListItem";
   import NewBidBox from "./NewBidBox";
   import {formatDateTimeAbsolute} from "./helpers";
 
   export default {
     components: {
+      AuctionStatusBox,
       NewBidBox,
       BidListItem
     },
