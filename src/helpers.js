@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const currencyFormatter = new Intl.NumberFormat("en-NZ", {
   style: "currency",
   currency: "NZD",
@@ -30,4 +32,17 @@ export function dollarStringToCents(dollarString) {
   } else {
     return Math.round(parseFloat(dollarString) * 100);
   }
+}
+
+/**
+ *
+ * @param {int} datetimeEpochMillis
+ * @returns {string}
+ */
+export function formatDateTimeAbsolute(datetimeEpochMillis) {
+  return new moment(datetimeEpochMillis).format("h:mm A, Do MMMM YYYY");
+}
+
+export function formatDateTimeRelative(datetimeEpochMillis) {
+  return new moment(datetimeEpochMillis).fromNow();
 }

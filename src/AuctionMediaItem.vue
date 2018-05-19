@@ -7,19 +7,22 @@
     ({{ auction.categoryTitle }})
     <p>
       Current bid is {{ currentBidAsCurrency }}
-      <br>Auction ends on {{ new Date(auction.endDateTime).toLocaleString("en-NZ") }}.
+      <br>Auction ends on {{ endDateString }}.
     </p>
   </b-media>
 </template>
 
 <script>
-  import {amountAsCurrency} from "./helpers";
+  import {amountAsCurrency, formatDateTimeAbsolute} from "./helpers";
 
   export default {
     name: "auction-media-item",
     props: ['auction'],
 
     computed: {
+      endDateString: function () {
+        return formatDateTimeAbsolute(this.auction.endDateTime)
+      },
       currentBidAsCurrency: function () {
         return amountAsCurrency(this.auction.currentBid);
       }
