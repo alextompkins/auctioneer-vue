@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
+import VueCookie from 'vue-cookie';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Home from './Home.vue';
@@ -49,6 +50,7 @@ const router = new VueRouter({
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(VueCookie);
 Vue.use(BootstrapVue);
 
 Vue.http.options.emulateJSON = true;

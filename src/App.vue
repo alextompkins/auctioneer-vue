@@ -57,6 +57,26 @@
       }
     },
 
+    watch: {
+      'session.user': {
+        handler: function (newVal, oldVal) {
+          if (newVal) {
+            this.$cookie.set('auth-id', newVal.id);
+          } else {
+            this.$cookie.delete('auth-id');
+          }
+        },
+        deep: true
+      },
+      'session.token': function (newVal, oldVal) {
+        if (newVal) {
+          this.$cookie.set('auth-token', newVal);
+        } else {
+          this.$cookie.delete('auth-token');
+        }
+      }
+    },
+
     methods: {
       logout: function () {
         this.$http.post(this.$apiUrl + '/users/logout', {}, {
@@ -70,6 +90,30 @@
           .catch(function () {
             // TODO do something if error
           });
+      },
+      loadUserFromIdAndToken: function (id, token) {
+        this.$http.get(this.$apiUrl + '/users/' + id, { headers: {'X-Authorization': token} })
+          .then(function (response) {
+            this.session.loggedIn = true;
+            this.session.user = {
+              'id': id,
+              'username': response.data.username,
+              'email': response.data.email
+            };
+            this.session.token = token;
+          })
+          .catch(function (error) {
+            // TODO do something clever
+          });
+      }
+    },
+
+    created: function () {
+      let authId = this.$cookie.get('auth-id');
+      let authToken = this.$cookie.get('auth-token');
+
+      if (authId && authToken) {
+        this.loadUserFromIdAndToken(authId, authToken);
       }
     }
 
