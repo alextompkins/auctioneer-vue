@@ -1,5 +1,23 @@
 import moment from "moment";
 
+
+/**
+ *
+ * @param {moment} other
+ * @returns {string}
+ */
+moment.fn.fromWithExactSeconds = function (other) {
+  const secondsDiff = Math.round(other.diff(this) / 1000);
+
+  if (-60 < secondsDiff && secondsDiff < 0) {
+    return "in " + Math.abs(secondsDiff) + " seconds";
+  } else if (0 <= secondsDiff && secondsDiff < 60) {
+    return Math.abs(secondsDiff) + " seconds ago";
+  } else {
+    return this.from(other);
+  }
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-NZ", {
   style: "currency",
   currency: "NZD",
@@ -43,6 +61,12 @@ export function formatDateTimeAbsolute(datetimeEpochMillis) {
   return new moment(datetimeEpochMillis).format("h:mm A, Do MMMM YYYY");
 }
 
-export function formatTimeRelative(datetimeEpochMillis) {
-  return new moment(datetimeEpochMillis).fromNow();
+/**
+ *
+ * @param {int} epochMillisFrom
+ * @param {int} epochMillisTo
+ * @returns {string}
+ */
+export function formatTimeRelative(epochMillisFrom, epochMillisTo) {
+  return new moment(epochMillisFrom).fromWithExactSeconds(new moment(epochMillisTo));
 }

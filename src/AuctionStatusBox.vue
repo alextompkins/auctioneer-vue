@@ -20,19 +20,29 @@
     name: "auction-status-box",
     props: ['auction'],
 
+    data() {
+      return {
+        currentTime: Date.now()
+      }
+    },
+
     computed: {
       timeToOrFromStart: function () {
-        return formatTimeRelative(this.auction.startDateTime);
+        return formatTimeRelative(this.auction.startDateTime, this.currentTime);
       },
       timeToOrFromEnd: function () {
-        return formatTimeRelative(this.auction.endDateTime);
+        return formatTimeRelative(this.auction.endDateTime, this.currentTime);
       },
       hasStarted: function() {
-        return Date.now() >= this.auction.startDateTime;
+        return this.currentTime >= this.auction.startDateTime;
       },
       hasEnded: function () {
-        return Date.now() >= this.auction.endDateTime;
+        return this.currentTime >= this.auction.endDateTime;
       }
+    },
+
+    created: function () {
+      setInterval(() => this.currentTime = Date.now(), 1000);
     }
 
   }
