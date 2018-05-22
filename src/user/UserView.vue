@@ -3,16 +3,17 @@
     <b-row>
       <b-col md="4">
         <h4>View Profile</h4>
-        <h2>{{ user.username }}</h2>
 
         <b-alert variant="danger" v-if="error" show>
           <strong>Error:</strong>
           <p>{{ error }}</p>
         </b-alert>
 
-        <h5 class="mt-3">Personal Details</h5>
+        <b-form @submit="commitEdit" v-if="user">
+          <h2>{{ user.username }}</h2>
 
-        <b-form @submit="commitEdit">
+          <h5 class="mt-3">Personal Details</h5>
+
           <template v-if="editing">
             <b-form-group label="Enter given name">
               <b-form-input v-model="givenNameInput"
@@ -36,24 +37,25 @@
             <br>Family Name: {{ user.familyName }}
           </template>
 
-          <h5 class="mt-3">Your Hidden Details</h5>
-
           <div v-if="userIsSelf">
+            <h5 class="mt-3">Your Hidden Details</h5>
+
             Email: {{ user.email }}
             <br>Account Balance: {{ formattedAccountBalance }}
           </div>
 
           <template v-if="userIsSelf">
-            <div class="mt-2" v-if="editing">
+            <div class="mt-3" v-if="editing">
               <b-button variant="success" type="submit">Save Changes</b-button>
               <b-button v-on:click="cancelEdit">Cancel</b-button>
               <loading-spinner class="float-right" :loading="loading" />
             </div>
 
-            <div class="mt-2" v-else>
+            <div class="mt-3" v-else>
               <b-button variant="success" v-on:click="editing = true">Edit</b-button>
             </div>
           </template>
+
         </b-form>
       </b-col>
     </b-row>
@@ -82,7 +84,7 @@
 
     computed: {
       userIsSelf: function () {
-        return this.$route.params.id === this.session.user.id;
+        return parseInt(this.$route.params.id) === parseInt(this.session.user.id);
       },
       formattedAccountBalance: function() {
         return amountAsCurrency(this.user.accountBalance);
@@ -141,6 +143,14 @@
               this.error = "The web server could not be reached.";
             }
           });
+      }
+    },
+
+    watch: {
+      'session.loggedIn': function (newVal, oldVal) {
+        if (newVal === false) {
+          this.$router.push({ name: 'home' });
+        }
       }
     },
 

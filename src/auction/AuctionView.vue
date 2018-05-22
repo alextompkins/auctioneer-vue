@@ -14,7 +14,7 @@
 
         <p>
           {{ auction.description }}
-          <br>Seller: {{ auction.seller.username }}
+          <br>Seller: <b-link :to="{ name: 'user-view', params: { id: auction.seller.id } }">{{ auction.seller.username }}</b-link>
 
           <br>{{ startDateString }}
           <br>{{ endDateString }}

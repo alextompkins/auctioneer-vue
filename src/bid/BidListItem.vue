@@ -1,6 +1,6 @@
 <template>
   <b-list-group-item>
-    <b-link>{{ bid.buyerUsername }}</b-link>
+    <b-link :to="{ name: 'user-view', params: { id: bid.buyerId } }">{{ bid.buyerUsername }}</b-link>
     <div class="d-flex w-100 justify-content-between">
       <h2>{{ amountAsCurrency }}</h2>
       <small class="mt-auto">{{ datetimeString }}</small>
