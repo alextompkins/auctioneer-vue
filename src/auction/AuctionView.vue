@@ -4,7 +4,13 @@
 
     <b-row>
       <b-col xs="12" md="7">
-        <h2>{{ auction.title }}</h2>
+        <h2 style="display: inline-block">{{ auction.title }}</h2>
+
+        <b-btn class="float-right"
+               v-if="canEdit"
+               :to="{ name: 'edit-auction', params: {id: this.$route.params.id} }">
+          Edit
+        </b-btn>
 
         <b-card class="mb-3" id="preview">
           <b-img :src="this.$apiUrl + '/auctions/' + $route.params.id + '/photos'"></b-img>
@@ -66,6 +72,11 @@
           return "Ended " + dateTimeString;
         }
       },
+      canEdit: function () {
+        return this.session.loggedIn &&
+          parseInt(this.auction.seller.id) === parseInt(this.session.user.id) &&
+          Date.now() < this.auction.startDateTime;
+      }
     },
 
     methods: {
