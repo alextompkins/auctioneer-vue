@@ -103,6 +103,8 @@
           .catch(function (error) {
             if (error.status === 0) {
               this.error = "The web server could not be reached.";
+            } else if (error.status === 401) {
+              this.error = "You cannot view user profiles because you are not logged in.";
             } else if (error.status === 404) {
               this.error = "No user with that ID exists.";
             }
