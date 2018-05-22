@@ -214,6 +214,9 @@
           });
         }
         return options;
+      },
+      loggedIn: function () {
+        return this.session.loggedIn;
       }
     },
 
@@ -261,12 +264,13 @@
           "startingBid": this.startingBidInCents
         };
 
+        let auctionId = null;
         this.$http.post(this.$apiUrl + '/auctions' , auctionData,
           { emulateJSON: false, headers: {'X-Authorization': this.session.token} })
           .then(function (response) {
-            return response.data.id;
+            auctionId = response.data.id;
           })
-          .then(function (auctionId) {
+          .then(function () {
             if (this.photo != null) {
               return this.$http.post(this.$apiUrl + '/auctions/' + auctionId + '/photos', this.photo, { emulateJSON: false,
                 headers: {'X-Authorization': this.session.token, 'Content-Type': this.photoContentType} });
@@ -274,12 +278,20 @@
           })
           .then(function () {
             this.loading = false;
-            this.$router.push({ name: 'search-auctions' });
+            this.$router.push({ name: 'auction-view', params: { id: auctionId } });
           })
           .catch(function (error) {
             this.loading = false;
             // TODO do something clever
           })
+      }
+    },
+
+    watch: {
+      loggedIn: function (newVal, oldVal) {
+        if (newVal === false) {
+          this.$router.push({ name: 'home' });
+        }
       }
     }
 
