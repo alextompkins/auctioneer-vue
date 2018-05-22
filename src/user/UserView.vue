@@ -12,10 +12,10 @@
 
         <h5 class="mt-3">Personal Details</h5>
 
-        <b-form @submit="updateUser">
+        <b-form @submit="commitEdit">
           <template v-if="editing">
             <b-form-group label="Enter given name">
-              <b-form-input v-model="user.givenName"
+              <b-form-input v-model="givenNameInput"
                             type="text"
                             placeholder="Given Name"
                             required>
@@ -23,7 +23,7 @@
             </b-form-group>
 
             <b-form-group label="Enter family name">
-              <b-form-input v-model="user.familyName"
+              <b-form-input v-model="familyNameInput"
                             type="text"
                             placeholder="Family Name"
                             required>
@@ -46,7 +46,7 @@
           <template v-if="userIsSelf">
             <div class="mt-2" v-if="editing">
               <b-button variant="success" type="submit">Save Changes</b-button>
-              <b-button v-on:click="editing = false">Cancel</b-button>
+              <b-button v-on:click="cancelEdit">Cancel</b-button>
               <loading-spinner class="float-right" :loading="loading" />
             </div>
 
@@ -72,6 +72,8 @@
     data() {
       return {
         user: null,
+        givenNameInput: "",
+        familyNameInput: "",
         editing: false,
         loading: false,
         error: ""
@@ -93,6 +95,8 @@
           { headers: {'X-Authorization': this.session.token} })
           .then(function (response) {
             this.user = response.data;
+            this.givenNameInput = this.user.givenName;
+            this.familyNameInput = this.user.familyName;
           })
           .catch(function (error) {
             if (error.status === 0) {
@@ -102,18 +106,29 @@
             }
           });
       },
-      updateUser: function (event) {
+      cancelEdit: function () {
+        this.givenNameInput = this.user.givenName;
+        this.familyNameInput = this.user.familyName;
+        this.editing = false;
+      },
+      commitEdit: function (event) {
         event.preventDefault();
         this.loading = true;
 
-        const updateData = {
-          "givenName": this.user.givenName,
-          "familyName": this.user.familyName
-        };
+        let updateData = {};
+        if (this.givenNameInput !== this.user.givenName) {
+          updateData.givenName = this.givenNameInput;
+        }
+        if (this.familyNameInput !== this.user.familyName) {
+          updateData.familyName = this.familyNameInput;
+        }
 
         this.$http.patch(this.$apiUrl + '/users/' + this.$route.params.id, updateData,
           { headers: {'X-Authorization': this.session.token} })
           .then(function () {
+            this.user.givenName = this.givenNameInput;
+            this.user.familyName = this.familyNameInput;
+
             this.loading = false;
             this.editing = false;
             this.error = "";
