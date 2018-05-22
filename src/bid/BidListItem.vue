@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {amountAsCurrency} from "./helpers";
+  import {amountAsCurrency} from "../helpers";
 
   export default {
     name: "bid-list-item",

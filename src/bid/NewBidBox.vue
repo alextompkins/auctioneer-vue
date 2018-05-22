@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {dollarStringToCents} from "./helpers";
+  import {dollarStringToCents} from "../helpers";
 
   export default {
     name: "new-bid-box",

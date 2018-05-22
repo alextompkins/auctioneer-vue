@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import {amountAsCurrency, formatDateTimeAbsolute} from "./helpers";
+  import {amountAsCurrency, formatDateTimeAbsolute} from "../helpers";
 
   export default {
     name: "auction-media-item",

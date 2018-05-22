@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Auctions</h1>
+    <h1>Search Auctions</h1>
 
     <!-- Filter Controls -->
     <b-alert variant="danger" show
@@ -45,7 +45,7 @@
 
   export default {
     components: {AuctionMediaItem},
-    name: "auctions",
+    name: "search-auctions",
     props: ['session'],
 
     data() {

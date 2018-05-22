@@ -5,10 +5,10 @@ import VueCookie from 'vue-cookie';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Home from './Home.vue';
-import Auctions from './Auctions.vue';
-import AuctionView from './AuctionView.vue';
-import Register from './Register.vue';
-import PostAuction from './PostAuction.vue';
+import SearchAuctions from './auction/SearchAuctions.vue';
+import AuctionView from './auction/AuctionView.vue';
+import Register from './user/Register.vue';
+import PostAuction from './auction/PostAuction.vue';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -22,8 +22,8 @@ const routes = [
   },
   {
     path: '/auctions',
-    name: 'auctions',
-    component: Auctions
+    name: 'search-auctions',
+    component: SearchAuctions
   },
   {
     path: '/auctions/:id',

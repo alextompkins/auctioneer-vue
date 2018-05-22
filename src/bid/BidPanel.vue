@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import AuctionStatusBox from "./AuctionStatusBox";
+  import AuctionStatusBox from "../auction/AuctionStatusBox";
   import BidListItem from "./BidListItem";
   import NewBidBox from "./NewBidBox";
 

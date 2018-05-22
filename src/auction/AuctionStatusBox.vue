@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import {formatTimeRelative} from "./helpers";
+  import {formatTimeRelative} from "../helpers";
 
   export default {
     name: "auction-status-box",

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import LoadingSpinner from "./LoadingSpinner";
+  import LoadingSpinner from "../misc/LoadingSpinner";
 
   export default {
     components: {LoadingSpinner},

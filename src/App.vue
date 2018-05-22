@@ -9,7 +9,7 @@
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item-dropdown text="Buying">
-            <b-dropdown-item :to="{ name: 'auctions' }">Search Auctions</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'search-auctions' }">Search Auctions</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Selling" v-if="session.loggedIn">
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import LoginBox from "./LoginBox";
+  import LoginBox from "./user/LoginBox";
 
   export default {
     components: {LoginBox},

@@ -35,8 +35,8 @@
 </template>
 
 <script>
-  import {formatDateTimeAbsolute} from "./helpers";
-  import BidPanel from "./BidPanel";
+  import {formatDateTimeAbsolute} from "../helpers";
+  import BidPanel from "../bid/BidPanel";
 
   export default {
     components: {BidPanel},

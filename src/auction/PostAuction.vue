@@ -127,8 +127,8 @@
 </template>
 
 <script>
-  import LoadingSpinner from "./LoadingSpinner";
-  import {dollarStringToCents} from "./helpers";
+  import LoadingSpinner from "../misc/LoadingSpinner";
+  import {dollarStringToCents} from "../helpers";
 
   export default {
     components: {LoadingSpinner},
@@ -274,7 +274,7 @@
           })
           .then(function () {
             this.loading = false;
-            this.$router.push({ name: 'auctions' });
+            this.$router.push({ name: 'search-auctions' });
           })
           .catch(function (error) {
             this.loading = false;
