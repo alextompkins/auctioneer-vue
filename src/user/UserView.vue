@@ -99,8 +99,10 @@
             this.user = response.data;
             this.givenNameInput = this.user.givenName;
             this.familyNameInput = this.user.familyName;
+            this.error = "";
           })
           .catch(function (error) {
+            this.user = null;
             if (error.status === 0) {
               this.error = "The web server could not be reached.";
             } else if (error.status === 401) {
@@ -149,10 +151,8 @@
     },
 
     watch: {
-      'session.loggedIn': function (newVal, oldVal) {
-        if (newVal === false) {
-          this.$router.push({ name: 'home' });
-        }
+      'session.loggedIn': function () {
+        this.getUser();
       }
     },
 
