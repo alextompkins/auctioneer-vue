@@ -9,6 +9,7 @@ import SearchAuctions from './auction/SearchAuctions.vue';
 import AuctionView from './auction/AuctionView.vue';
 import Register from './user/Register.vue';
 import PostAuction from './auction/PostAuction.vue';
+import UserView from './user/UserView.vue';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -31,14 +32,19 @@ const routes = [
     component: AuctionView
   },
   {
+    path: '/new_auction',
+    name: 'post-auction',
+    component: PostAuction
+  },
+  {
     path: '/register',
     name: 'register',
     component: Register
   },
   {
-    path: '/new_auction',
-    name: 'post-auction',
-    component: PostAuction
+    path: '/users/:id',
+    name: 'user-view',
+    component: UserView
   }
 ];
 
