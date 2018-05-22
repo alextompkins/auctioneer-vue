@@ -153,6 +153,7 @@
     watch: {
       'session.loggedIn': function () {
         this.getUser();
+        this.editing = false;
       }
     },
 
