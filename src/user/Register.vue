@@ -126,7 +126,6 @@
             return this.$http.post(this.$apiUrl + '/users/login', loginData);
           })
           .then(function (response) {
-            this.session.loggedIn = true;
             this.session.user = {
               "id": response.data.id,
               "username": createData.username,
@@ -135,6 +134,7 @@
             };
             this.session.token = response.data.token;
             this.loading = false;
+            this.session.loggedIn = true;
             this.$router.push({ name: 'home' });
           })
           .catch(function (error) {
@@ -145,6 +145,14 @@
             }
             this.loading = false;
           });
+      }
+    },
+
+    watch: {
+      'session.loggedIn': function (newVal, oldVal) {
+        if (newVal === true) {
+          this.$router.push({ name: 'home' });
+        }
       }
     }
 

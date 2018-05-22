@@ -214,9 +214,6 @@
           });
         }
         return options;
-      },
-      loggedIn: function () {
-        return this.session.loggedIn;
       }
     },
 
@@ -288,7 +285,7 @@
     },
 
     watch: {
-      loggedIn: function (newVal, oldVal) {
+      'session.loggedIn': function (newVal, oldVal) {
         if (newVal === false) {
           this.$router.push({ name: 'home' });
         }
