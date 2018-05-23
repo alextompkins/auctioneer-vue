@@ -34,4 +34,7 @@
   h5 {
     display: inline-block;
   }
+  img {
+    max-height: 100px;
+  }
 </style>
