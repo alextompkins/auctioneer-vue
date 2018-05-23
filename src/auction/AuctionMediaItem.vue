@@ -1,6 +1,6 @@
 <template>
   <b-media class="mb-1">
-    <b-img slot="aside" :src="imgPath()" width="100" alt="placeholder" ></b-img>
+    <b-img slot="aside" :src="imgPath()" width="100"></b-img>
 
     <b-link :to="{ name: 'auction-view', params: { id: auction.id } }">
       <h5 class="mt-0">{{ auction.title }}</h5>
