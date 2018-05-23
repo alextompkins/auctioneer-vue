@@ -1,6 +1,6 @@
 <template>
   <b-media class="mb-1">
-    <b-img slot="aside" :src="this.$apiUrl + '/auctions/' + auction.id + '/photos'" width="100" alt="placeholder" ></b-img>
+    <b-img slot="aside" :src="imgPath()" width="100" alt="placeholder" ></b-img>
     <b-link :to="{ name: 'auction-view', params: { id: auction.id } }">
       <h5 class="mt-0">{{ auction.title }}</h5>
     </b-link>
@@ -25,6 +25,12 @@
       },
       currentBidAsCurrency: function () {
         return amountAsCurrency(this.auction.currentBid);
+      }
+    },
+
+    methods: {
+      imgPath: function () {
+        return this.$apiUrl + '/auctions/' + this.auction.id + '/photos' + "?token=" + Date.now();
       }
     }
   }
