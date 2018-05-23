@@ -37,13 +37,23 @@
         </b-col>
 
         <b-col lg="5" xs="0"></b-col>
-
-        <b-col xs="12">
-          <b-form-checkbox v-if="session.loggedIn" v-model="onlyBiddedFilter">
-            Only include auctions I have bid on.
-          </b-form-checkbox>
-        </b-col>
       </b-form-row>
+
+      <b-form-checkbox v-if="session.loggedIn" v-model="onlyBiddedFilter">
+        Only include auctions I have bid on.
+      </b-form-checkbox>
+
+      <nav class="mt-3">
+        <ul class="pagination">
+          <li class="page-item disabled" v-if="this.prevDisabled"><a class="page-link">Previous</a></li>
+          <li class="page-item" v-else><a class="page-link" v-on:click="prevPage">Previous</a></li>
+
+          <li class="page-item disabled"><span class="page-link">{{ currentPageSpan }}</span></li>
+
+          <li class="page-item" v-if="nextDisabled"><a class="page-link">Next</a></li>
+          <li class="page-item" v-else><a class="page-link" v-on:click="nextPage">Next</a></li>
+        </ul>
+      </nav>
     </b-form>
 
     <!-- Auctions List -->
@@ -61,6 +71,8 @@
 <script>
   import AuctionMediaItem from "./AuctionMediaItem";
 
+  const ITEMS_PER_PAGE = 5;
+
   export default {
     components: {AuctionMediaItem},
     name: "search-auctions",
@@ -76,7 +88,18 @@
         categoryFilter: "",
         onlyBiddedFilter: false,
         categories: [],
-        auctions: []
+        auctions: [],
+        currentPage: 0,
+        nextDisabled: false
+      }
+    },
+
+    computed: {
+      prevDisabled: function () {
+        return this.currentPage <= 0;
+      },
+      currentPageSpan: function () {
+        return (ITEMS_PER_PAGE * this.currentPage + 1) + "-" + (ITEMS_PER_PAGE * (this.currentPage + 1));
       }
     },
 
@@ -106,6 +129,14 @@
     },
 
     methods: {
+      prevPage: function () {
+        this.currentPage--;
+        this.getAuctions();
+      },
+      nextPage: function () {
+        this.currentPage++;
+        this.getAuctions();
+      },
       getAuctions: function () {
         let params = {
           "status": this.statusFilter.toLowerCase(),
