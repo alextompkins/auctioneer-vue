@@ -4,7 +4,7 @@
 
     <!-- Filter Controls -->
     <b-alert variant="danger" show
-      v-if="errorFlag">
+             v-if="errorFlag">
       <strong>An error occurred:</strong>
       <br>{{ error }}
     </b-alert>
@@ -124,12 +124,12 @@
       },
       getCategoryOptions: function () {
         let options = [];
-        options.push({ text: "Any", value: "" });
+        options.push({text: "Any", value: ""});
         for (let category of this.categories) {
           options.push({
-              text: category.categoryTitle.charAt(0).toUpperCase() + category.categoryTitle.slice(1),
-              value: category.categoryId
-            });
+            text: category.categoryTitle.charAt(0).toUpperCase() + category.categoryTitle.slice(1),
+            value: category.categoryId
+          });
         }
         return options;
       }
