@@ -139,6 +139,11 @@
         if (newVal === false) {
           this.$router.push({ name: 'home' });
         }
+      },
+      'session.user': function (newVal, oldVal) {
+        if (newVal) {
+          this.getAuctions();
+        }
       }
     },
 

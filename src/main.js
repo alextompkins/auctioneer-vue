@@ -44,7 +44,7 @@ const routes = [
     component: PostAuction
   },
   {
-    path: '/my-auctions',
+    path: '/my_auctions',
     name: 'my-auctions',
     component: MyAuctions
   },
