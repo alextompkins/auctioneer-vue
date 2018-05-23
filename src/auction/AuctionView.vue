@@ -13,7 +13,7 @@
         </b-btn>
 
         <b-card class="mb-3" id="preview">
-          <b-img :src="this.$apiUrl + '/auctions/' + $route.params.id + '/photos'"></b-img>
+          <b-img :src="imgPath()"></b-img>
         </b-card>
 
         <h4>Details</h4>
@@ -102,6 +102,9 @@
           .catch(function (error) {
             // TODO deal with error
           });
+      },
+      imgPath: function () {
+        return this.$apiUrl + '/auctions/' + this.$route.params.id + '/photos' + "?token=" + Date.now();
       }
     },
 

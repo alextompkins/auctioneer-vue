@@ -112,7 +112,7 @@
           </b-form-group>
 
           <b-card id="preview" v-if="!photoChanged">
-            <b-img :src="this.$apiUrl + '/auctions/' + $route.params.id + '/photos'"></b-img>
+            <b-img :src="imgPath()"></b-img>
           </b-card>
           <b-card id="preview" v-else-if="previewUrl && photoValid">
             <b-img :src="previewUrl"></b-img>
@@ -236,6 +236,9 @@
           this.photoValid !== false) {
           this.updateAuction()
         }
+      },
+      imgPath: function () {
+        return this.$apiUrl + '/auctions/' + this.$route.params.id + '/photos' + "?token=" + Date.now();
       },
       getCategories: function () {
         this.$http.get(this.$apiUrl + '/categories')
