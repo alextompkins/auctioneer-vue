@@ -20,18 +20,26 @@
 
         <p>
           {{ auction.description }}
+          <br>Category: {{ auction.categoryTitle }}
           <br>Seller: <b-link :to="{ name: 'user-view', params: { id: auction.seller.id } }">{{ auction.seller.username }}</b-link>
-
-          <br>{{ startDateString }}
-          <br>{{ endDateString }}
         </p>
 
+        <p>
+          {{ startDateString }}
+          <br>{{ endDateString }}
+        </p>
       </b-col>
 
       <b-col xs="12" md="1"></b-col>
 
       <b-col xs="12" md="4">
         <h4>Bids</h4>
+
+        <p>
+          Reserve Price: {{ reservePriceAsCurrency }}
+          <br>Starting Bid: {{ startingBidAsCurrency }}
+        </p>
+
         <bid-panel :session="session" :auction="auction"/>
       </b-col>
 
@@ -41,7 +49,7 @@
 </template>
 
 <script>
-  import {formatDateTimeAbsolute} from "../helpers";
+  import {amountAsCurrency, formatDateTimeAbsolute} from "../helpers";
   import BidPanel from "../bid/BidPanel";
 
   export default {
@@ -71,6 +79,12 @@
         } else {
           return "Ended " + dateTimeString;
         }
+      },
+      reservePriceAsCurrency: function () {
+        return amountAsCurrency(this.auction.reservePrice);
+      },
+      startingBidAsCurrency: function () {
+        return amountAsCurrency(this.auction.startingBid);
       },
       canEdit: function () {
         return this.session.loggedIn &&
