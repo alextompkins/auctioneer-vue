@@ -63,6 +63,15 @@ export function formatDateTimeAbsolute(datetimeEpochMillis) {
 
 /**
  *
+ * @param {int} datetimeEpochMillis
+ * @returns {string}
+ */
+export function formatEpochMillisForInput(datetimeEpochMillis) {
+  return new moment(datetimeEpochMillis).format("YYYY-MM-DD HH:mm:ss").split(" ");
+}
+
+/**
+ *
  * @param {int} epochMillisFrom
  * @param {int} epochMillisTo
  * @returns {string}
