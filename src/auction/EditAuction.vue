@@ -234,7 +234,7 @@
         if (this.startDateTimeValid && this.endDateTimeValid &&
           this.reservePriceValid && this.startingBidValid &&
           this.photoValid !== false) {
-
+          this.updateAuction()
         }
       },
       getCategories: function () {
@@ -276,6 +276,54 @@
           })
           .catch(function (error) {
             // TODO deal with error
+          });
+      },
+      updateAuction: function() {
+        this.loading = true;
+
+        let updateData = {};
+        if (this.categoryId !== this.auction.categoryId) {
+          updateData.categoryId = this.categoryId;
+        }
+        if (this.title !== this.auction.title) {
+          updateData.title = this.title;
+        }
+        if (this.description !== this.auction.description) {
+          updateData.description = this.description;
+        }
+        if (this.startDateTime !== this.auction.startDateTime) {
+          updateData.startDateTime = this.startDateTime;
+        }
+        if (this.endDateTime !== this.auction.endDateTime) {
+          updateData.endDateTime = this.endDateTime;
+        }
+        if (this.reservePriceInCents !== this.auction.reservePrice) {
+          updateData.reservePrice = this.reservePriceInCents;
+        }
+        if (this.startingBidInCents !== this.auction.startingBid) {
+          updateData.startingBid = this.startingBidInCents;
+        }
+
+        this.$http.patch(this.$apiUrl + '/auctions/' + this.$route.params.id, updateData,
+          { emulateJSON: false, headers: {'X-Authorization': this.session.token} })
+          .then(function () {
+            if (this.photoChanged) {
+              if (this.photo === null) {
+                return this.$http.delete(this.$apiUrl + '/auctions/' + auctionId + '/photos',
+                  { headers: {'X-Authorization': this.session.token} });
+              } else {
+                return this.$http.post(this.$apiUrl + '/auctions/' + auctionId + '/photos', this.photo, { emulateJSON: false,
+                  headers: {'X-Authorization': this.session.token, 'Content-Type': this.photoContentType} });
+              }
+            }
+          })
+          .then(function () {
+            this.loading = false;
+            this.$router.push({ name: 'auction-view', params: { id: this.$route.params.id } });
+          })
+          .catch(function (error) {
+            this.loading = false;
+            // TODO do something clever
           });
       }
     },
