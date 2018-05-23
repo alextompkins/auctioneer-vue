@@ -9,25 +9,35 @@
       <br>{{ error }}
     </b-alert>
 
-    <b-form class="mb-3" inline>
-      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter status">
-        <b-form-select v-model="statusFilter"
-                       :options="statusFilterOptions">
-        </b-form-select>
-      </b-form-group>
+    <b-form class="mb-3">
+      <b-form-row>
+        <b-col lg="2" xs="12">
+          <b-form-group label="Filter by status">
+            <b-form-select v-model="statusFilter"
+                           :options="statusFilterOptions">
+            </b-form-select>
+          </b-form-group>
+        </b-col>
 
-      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter by title">
-        <b-form-input v-model="titleFilter"
-                      type="text"
-                      placeholder="Title">
-        </b-form-input>
-      </b-form-group>
+        <b-col lg="3" xs="12">
+          <b-form-group label="Filter by title">
+            <b-form-input v-model="titleFilter"
+                          type="text"
+                          placeholder="Title">
+            </b-form-input>
+          </b-form-group>
+        </b-col>
 
-      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter by category">
-        <b-form-select v-model="categoryFilter"
-                       :options="this.getCategoryOptions()">
-        </b-form-select>
-      </b-form-group>
+        <b-col lg="2" xs="12">
+          <b-form-group label="Filter by category">
+            <b-form-select v-model="categoryFilter"
+                           :options="this.getCategoryOptions()">
+            </b-form-select>
+          </b-form-group>
+        </b-col>
+
+        <b-col lg="5" xs="0"></b-col>
+      </b-form-row>
     </b-form>
 
     <!-- Auctions List -->
