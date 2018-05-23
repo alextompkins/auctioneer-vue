@@ -10,6 +10,7 @@
         <b-navbar-nav>
           <b-nav-item-dropdown text="Buying">
             <b-dropdown-item :to="{ name: 'search-auctions' }">Search Auctions</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'won-auctions' }" v-if="this.session.loggedIn">My Won Auctions</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Selling" v-if="session.loggedIn">
