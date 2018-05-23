@@ -10,22 +10,24 @@
     </b-alert>
 
     <b-form class="mb-3" inline>
-      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
-        v-model="statusFilter"
-        :options="statusFilterOptions">
-      </b-form-select>
-
-      <b-form-group class="mb-2 mr-sm-2 mb-sm-0">
-        <b-form-input
-          v-model="titleFilter"
-          type="text"
-          placeholder="Auction Title"></b-form-input>
+      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter status">
+        <b-form-select v-model="statusFilter"
+                       :options="statusFilterOptions">
+        </b-form-select>
       </b-form-group>
 
-      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
-        v-model="categoryFilter"
-        :options="this.getCategoryOptions()">
-      </b-form-select>
+      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter by title">
+        <b-form-input v-model="titleFilter"
+                      type="text"
+                      placeholder="Title">
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group class="mb-2 mr-sm-2 mb-sm-0" label="Filter by category">
+        <b-form-select v-model="categoryFilter"
+                       :options="this.getCategoryOptions()">
+        </b-form-select>
+      </b-form-group>
     </b-form>
 
     <!-- Auctions List -->
