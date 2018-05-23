@@ -177,7 +177,7 @@
         const photoNameLower = this.photo.name.toLowerCase();
         if (photoNameLower.endsWith(".png")) {
           return "image/png";
-        } else if (photoNameLower.endsWith("jpg") || photoNameLower.endsWith(".jpeg")) {
+        } else if (photoNameLower.endsWith(".jpg") || photoNameLower.endsWith(".jpeg")) {
           return "image/jpeg";
         } else {
           return "";
