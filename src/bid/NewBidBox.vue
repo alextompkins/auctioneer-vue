@@ -16,7 +16,9 @@
             </b-btn>
           </b-input-group-append>
         </b-input-group>
-        <template slot="invalid-feedback">{{ invalidFeedback }}</template>
+        <div class="invalid-error" v-if="amountValid === false">
+          Bid must be higher than the current/starting bid.
+        </div>
       </b-form-group>
 
     </b-form>
@@ -48,9 +50,6 @@
         } else {
           return this.amountInCents >= this.nextBid;
         }
-      },
-      invalidFeedback: function () {
-        return "Bid must be higher than the current/starting bid.";
       }
     },
 
@@ -84,5 +83,11 @@
 </script>
 
 <style scoped>
-
+  .invalid-error {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #dc3545;
+  }
 </style>
