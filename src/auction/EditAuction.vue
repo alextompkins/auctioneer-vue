@@ -309,11 +309,11 @@
           .then(function () {
             if (this.photoChanged) {
               if (this.photo === null) {
-                return this.$http.delete(this.$apiUrl + '/auctions/' + auctionId + '/photos',
+                return this.$http.delete(this.$apiUrl + '/auctions/' + this.$route.params.id + '/photos',
                   { headers: {'X-Authorization': this.session.token} });
               } else {
-                return this.$http.post(this.$apiUrl + '/auctions/' + auctionId + '/photos', this.photo, { emulateJSON: false,
-                  headers: {'X-Authorization': this.session.token, 'Content-Type': this.photoContentType} });
+                return this.$http.post(this.$apiUrl + '/auctions/' + this.$route.params.id + '/photos', this.photo,
+                  { emulateJSON: false, headers: {'X-Authorization': this.session.token, 'Content-Type': this.photoContentType} });
               }
             }
           })
