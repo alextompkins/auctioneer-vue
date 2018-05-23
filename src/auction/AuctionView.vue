@@ -40,7 +40,7 @@
           <br>Starting Bid: {{ startingBidAsCurrency }}
         </p>
 
-        <bid-panel :session="session" :auction="auction"/>
+        <bid-panel class="mb-3" :session="session" :auction="auction"/>
       </b-col>
 
     </b-row>
