@@ -50,7 +50,7 @@
 
           <li class="page-item disabled"><span class="page-link">{{ currentPageSpan }}</span></li>
 
-          <li class="page-item" v-if="nextDisabled"><a class="page-link">Next</a></li>
+          <li class="page-item disabled" v-if="nextDisabled"><a class="page-link">Next</a></li>
           <li class="page-item" v-else><a class="page-link" v-on:click="nextPage">Next</a></li>
         </ul>
       </nav>
@@ -99,21 +99,26 @@
         return this.currentPage <= 0;
       },
       currentPageSpan: function () {
-        return (ITEMS_PER_PAGE * this.currentPage + 1) + "-" + (ITEMS_PER_PAGE * (this.currentPage + 1));
+        return this.auctions.length === 0 ? "0-0" : (ITEMS_PER_PAGE * this.currentPage + 1) +
+          "-" + (ITEMS_PER_PAGE * this.currentPage + this.auctions.length);
       }
     },
 
     watch: {
       statusFilter: function () {
+        this.currentPage = 0;
         this.getAuctions();
       },
       titleFilter: function () {
+        this.currentPage = 0;
         this.getAuctions();
       },
       categoryFilter: function () {
+        this.currentPage = 0;
         this.getAuctions();
       },
       onlyBiddedFilter: function () {
+        this.currentPage = 0;
         this.getAuctions();
       },
       'session.loggedIn': function (newVal, oldVal) {
@@ -141,7 +146,9 @@
         let params = {
           "status": this.statusFilter.toLowerCase(),
           "q": this.titleFilter,
-          "category-id": this.categoryFilter
+          "category-id": this.categoryFilter,
+          "count": ITEMS_PER_PAGE + 1,
+          "startIndex": ITEMS_PER_PAGE * this.currentPage
         };
 
         if (this.onlyBiddedFilter) {
@@ -150,7 +157,8 @@
 
         this.$http.get(this.$apiUrl + '/auctions', {params: params})
           .then(function (response) {
-            this.auctions = response.data;
+            this.nextDisabled = response.data.length < ITEMS_PER_PAGE + 1;
+            this.auctions = response.data.slice(0, 5);
           })
           .then(function () {
             this.errorFlag = false;
