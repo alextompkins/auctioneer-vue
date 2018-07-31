@@ -78,7 +78,7 @@ Vue.use(VueCookie);
 Vue.use(BootstrapVue);
 
 Vue.http.options.emulateJSON = true;
-Vue.prototype.$apiUrl = 'http://localhost:4941/api/v1';
+Vue.prototype.$apiUrl = 'https://fathomless-hollows-20816.herokuapp.com/api/v1';
 
 new Vue({
   el: '#app',
