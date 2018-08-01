@@ -18,49 +18,50 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 
+const basePath = process.env.BASE_PATH || '/auctioneer';
 const routes = [
   {
-    path: '/',
+    path: basePath + '/',
     name: 'home',
     component: Home
   },
   {
-    path: '/auctions',
+    path: basePath + '/auctions',
     name: 'search-auctions',
     component: SearchAuctions
   },
   {
-    path: '/auctions/:id',
+    path: basePath + '/auctions/:id',
     name: 'auction-view',
     component: AuctionView
   },
   {
-    path: '/auctions/:id/edit',
+    path: basePath + '/auctions/:id/edit',
     name: 'edit-auction',
     component: EditAuction
   },
   {
-    path: '/new_auction',
+    path: basePath + '/new_auction',
     name: 'post-auction',
     component: PostAuction
   },
   {
-    path: '/my_auctions',
+    path: basePath + '/my_auctions',
     name: 'my-auctions',
     component: MyAuctions
   },
   {
-    path: '/won_auctions',
+    path: basePath + '/won_auctions',
     name: 'won-auctions',
     component: WonAuctions
   },
   {
-    path: '/register',
+    path: basePath + '/register',
     name: 'register',
     component: Register
   },
   {
-    path: '/users/:id',
+    path: basePath + '/users/:id',
     name: 'user-view',
     component: UserView
   }
@@ -78,7 +79,7 @@ Vue.use(VueCookie);
 Vue.use(BootstrapVue);
 
 Vue.http.options.emulateJSON = true;
-Vue.prototype.$apiUrl = 'https://fathomless-hollows-20816.herokuapp.com/api/v1';
+Vue.prototype.$apiUrl = process.env.API_URL || 'https://fathomless-hollows-20816.herokuapp.com/api/v1';
 
 new Vue({
   el: '#app',
