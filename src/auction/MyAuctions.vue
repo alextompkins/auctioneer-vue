@@ -84,9 +84,18 @@
         let params = {
           "seller": this.session.user.id,
           "status": this.statusFilter.toLowerCase(),
-          "q": this.titleFilter,
-          "category-id": this.categoryFilter
+          "count": ITEMS_PER_PAGE + 1,
+          "startIndex": ITEMS_PER_PAGE * this.currentPage
         };
+        if (this.titleFilter !== "") {
+          params["q"] = this.titleFilter;
+        }
+        if (this.categoryFilter !== "") {
+          params["category-id"] = this.categoryFilter;
+        }
+        if (this.onlyBiddedFilter) {
+          params["bidder"] = this.session.user.id;
+        }
         this.$http.get(this.$apiUrl + '/auctions', {params: params})
           .then(function (response) {
             this.auctions = response.data;
