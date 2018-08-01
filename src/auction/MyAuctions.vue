@@ -87,8 +87,6 @@
         let params = {
           "seller": this.session.user.id,
           "status": this.statusFilter.toLowerCase(),
-          "count": ITEMS_PER_PAGE + 1,
-          "startIndex": ITEMS_PER_PAGE * this.currentPage
         };
         if (this.titleFilter !== "") {
           params["q"] = this.titleFilter;
