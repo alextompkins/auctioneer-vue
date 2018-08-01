@@ -145,12 +145,15 @@
       getAuctions: function () {
         let params = {
           "status": this.statusFilter.toLowerCase(),
-          "q": this.titleFilter,
-          "category-id": this.categoryFilter,
           "count": ITEMS_PER_PAGE + 1,
           "startIndex": ITEMS_PER_PAGE * this.currentPage
         };
-
+        if (this.titleFilter !== "") {
+          params["q"] = this.titleFilter;
+        }
+        if (this.categoryFilter !== "") {
+          params["category-id"] = this.categoryFilter;
+        }
         if (this.onlyBiddedFilter) {
           params["bidder"] = this.session.user.id;
         }
