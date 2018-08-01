@@ -10,13 +10,17 @@
     </b-alert>
 
     <!-- Auctions List -->
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" v-if="auctions.length > 0">
       <auction-media-item
         v-for="auction in auctions"
         :auction="auction"
         :key="auction.id">
       </auction-media-item>
     </ul>
+    <div v-else>
+      You haven't won any auctions yet.
+      <b-link :to="{ name: 'search-auctions' }">Get bidding!</b-link>
+    </div>
 
   </b-container>
 </template>
@@ -39,7 +43,12 @@
 
     methods: {
       getAuctions: function () {
-        this.$http.get(this.$apiUrl + '/my_won_auctions', {headers: {'X-Authorization': this.session.token}})
+        let params = {
+          "status": "won",
+          "winner": this.session.user.id
+        };
+        this.$http.get(this.$apiUrl + '/auctions', {params: params,
+          headers: {'X-Authorization': this.session.token}})
           .then(function (response) {
             this.auctions = response.data;
           })
