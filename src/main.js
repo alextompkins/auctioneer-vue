@@ -78,7 +78,7 @@ Vue.use(VueRouter);
 Vue.use(VueCookie);
 Vue.use(BootstrapVue);
 
-Vue.http.options.emulateJSON = true;
+Vue.http.options.emulateJSON = false;
 Vue.prototype.$apiUrl = process.env.API_URL || 'https://fathomless-hollows-20816.herokuapp.com/api/v1';
 
 new Vue({
