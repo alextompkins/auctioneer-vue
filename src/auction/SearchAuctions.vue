@@ -57,13 +57,16 @@
     </b-form>
 
     <!-- Auctions List -->
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" v-if="auctions.length > 0">
       <auction-media-item
         v-for="auction in auctions"
         :auction="auction"
         :key="auction.id">
       </auction-media-item>
     </ul>
+    <div v-else>
+      No matching auctions could be found.
+    </div>
 
   </b-container>
 </template>

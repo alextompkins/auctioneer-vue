@@ -41,13 +41,16 @@
     </b-form>
 
     <!-- Auctions List -->
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" v-if="auctions.length > 0">
       <auction-media-item
         v-for="auction in auctions"
         :auction="auction"
         :key="auction.id">
       </auction-media-item>
     </ul>
+    <div v-else>
+      None of your auctions match those criteria. Let's <b-link :to="{ name: 'post-auction' }">make a new one!</b-link>
+    </div>
 
   </b-container>
 </template>
